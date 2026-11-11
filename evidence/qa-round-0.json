@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "worker": "/root/qa",
+  "round": 0,
+  "approved": true,
+  "verdict": "approved",
+  "timestamp": "2026-11-11T10:21:02.389Z",
+  "snapshot": {
+    "site/app.mjs": "b614b8fc96d6c1e2eee97d8cab83f83e7a6a7bf52f4ccce13b25d9c5ba57c052",
+    "site/calculator.mjs": "99efdfa721a592d35b05ff603ee6e1af286b9410e5b3eaf391ae68b882ad68b7",
+    "site/index.html": "38efaa156219f30332a7c8b7e4d25e5150d5d393c97a581d98b063e21bc3756c",
+    "site/style.css": "3287e6cf073bf888127ebe1b674390584578771110fdf64ab083b86100ac3096"
+  },
+  "commands": [
+    {
+      "command": "node --test outputs/electricity-demo/tests/*.test.mjs outputs/electricity-demo/qa/*.test.mjs",
+      "exitCode": 0,
+      "tests": 13,
+      "passed": 13,
+      "failed": 0
+    }
+  ],
+  "defects": [],
+  "coverage": [
+    "Independent numeric acceptance cases",
+    "Actual app submit handler executed with a minimal DOM stub",
+    "Static accessibility and relative-path checks",
+    "Deployment gate positive and negative fixture checks",
+    "Workflow inspection"
+  ],
+  "limitations": [
+    "No full browser visual, keyboard or screen-reader session performed",
+    "GitHub-hosted Actions and Pages have not run; local Node tests only"
+  ],
+  "testOutput": "evidence/qa-round-0-tests.txt",
+  "handoff": {
+    "receivedFrom": "/root/engineer",
+    "implementationHandoff": "evidence/engineer-handoff-0.json",
+    "sentTo": [
+      "/root",
+      "/root/engineer"
+    ],
+    "correctionsRequested": 0
+  }
+}

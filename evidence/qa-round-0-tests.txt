@@ -1,0 +1,21 @@
+✔ QA reference case uses 30 and 365 days (1.1191ms)
+✔ QA decimals and numeric strings preserve units (0.1433ms)
+✔ QA zero values and 24 hour boundary (0.1044ms)
+✔ QA rejects missing, malformed, negative and nonfinite fields (0.4891ms)
+✔ QA rejects arithmetic overflow (0.1104ms)
+✔ QA actual UI submit formats output and clears stale output on invalid submit (11.8418ms)
+✔ QA static markup labels all fields and announces results and errors (4.3417ms)
+✔ QA Pages workflow runs tests before publishing site only (0.5882ms)
+✔ QA deployment gate fails closed for missing approval, changed and added files (407.69ms)
+✔ reference appliance uses two kWh and costs €18 monthly, €219 annually (0.9953ms)
+✔ accepts decimal inputs without rounding intermediate results (0.1253ms)
+✔ zero and 24-hour boundaries are valid (0.1425ms)
+✔ rejects blanks, nonfinite numbers, negatives, excessive hours, and overflow (0.4546ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 475.3758

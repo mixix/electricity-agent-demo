@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "worker": "/root/qa",
+  "round": 1,
+  "approved": true,
+  "verdict": "approved",
+  "timestamp": "2026-11-11T10:23:09.391Z",
+  "snapshot": {
+    "site/app.mjs": "b614b8fc96d6c1e2eee97d8cab83f83e7a6a7bf52f4ccce13b25d9c5ba57c052",
+    "site/calculator.mjs": "99efdfa721a592d35b05ff603ee6e1af286b9410e5b3eaf391ae68b882ad68b7",
+    "site/index.html": "38efaa156219f30332a7c8b7e4d25e5150d5d393c97a581d98b063e21bc3756c",
+    "site/style.css": "3287e6cf073bf888127ebe1b674390584578771110fdf64ab083b86100ac3096"
+  },
+  "controllerSnapshot": {
+    "orchestration/run.mjs": "4ce716529edc7ad512da0b523a9524394fbf173c71dc2092c7897e7150b22abc",
+    "orchestration/snapshot.mjs": "110a4fa7c9ea00a4ff02b39be04f379cf6a73f80751699a1bf0c4797777de0ad",
+    "orchestration/verify-qa.mjs": "2699fb6b811e0819372f8939eb518d95e72d73abddf65a9878f62a27f3a55527"
+  },
+  "defects": [
+    {
+      "id": "QA-ORCH-001",
+      "status": "fixed",
+      "before": "Replay printed APPROVED without replacing stale qa-final snapshot; changed application could fail Pages gate after replay approval.",
+      "after": "Controller snapshots before QA, rejects changed inventory or content, records exact approved snapshot and round/evidence link before terminal APPROVED.",
+      "verification": "Independent integration fixture proves old approval fails real deployment gate, corrected approval passes, deletion during review rejects."
+    }
+  ],
+  "commands": [
+    {
+      "command": "node --test outputs/electricity-demo/tests/*.test.mjs outputs/electricity-demo/qa/*.test.mjs",
+      "exitCode": 0,
+      "tests": 15,
+      "passed": 15,
+      "failed": 0
+    },
+    {
+      "command": "node --check outputs/electricity-demo/orchestration/run.mjs",
+      "exitCode": 0
+    },
+    {
+      "command": "node outputs/electricity-demo/orchestration/verify-qa.mjs",
+      "exitCode": 0
+    }
+  ],
+  "testOutput": "evidence/qa-round-1-tests.txt",
+  "limitations": [
+    "Replay CLI worker invocations have not been run end-to-end; controller integration uses deterministic fixtures.",
+    "Three-minute worker timer is not a proven Windows descendant-process termination bound.",
+    "UI verified with minimal DOM stub and markup inspection, not full browser rendering.",
+    "GitHub Actions and Pages not executed remotely."
+  ],
+  "handoff": {
+    "receivedFrom": "/root/engineer",
+    "sentTo": [
+      "/root",
+      "/root/engineer"
+    ],
+    "correctionCycle": 1
+  }
+}

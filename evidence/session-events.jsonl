@@ -1,0 +1,11 @@
+{"sequence":1,"event":"preflight","runtime":"Codex desktop native collaboration","cli":"0.167.0-alpha.3.2","cli_auth":"ChatGPT login verified","node":"v24.22.1","github_login":"mixix","github_cli_available":false,"api_key_in_environment":false,"remote_changes":false}
+{"sequence":2,"event":"worker_spawned","worker":"/root/engineer","role":"Engineer","method":"collaboration.spawn_agent","assignment":"Build static calculator and CI; report tests; no remote writes"}
+{"sequence":3,"event":"worker_spawned","worker":"/root/qa","role":"QA","method":"collaboration.spawn_agent","assignment":"Plan independently before implementation; execute own acceptance tests; report hashes and verdict"}
+{"sequence":4,"event":"qa_plan_ready","worker":"/root/qa","artifact":"work/qa-plan.md","implementation_review_started":false}
+{"sequence":5,"event":"handoff","from":"/root/engineer","to":"/root/qa","method":"collaboration.send_message","round":0,"artifact":"evidence/engineer-handoff-0.json","engineering_tests_passed":4}
+{"sequence":6,"event":"qa_verdict","round":0,"scope":"calculator","approved":true,"tests_passed":13,"corrections":0}
+{"sequence":7,"event":"qa_defect","scope":"replay_controller","finding":"Approved replay does not refresh deployment QA snapshot; stale hashes block Pages"}
+{"sequence":8,"event":"handoff","from":"/root/qa","to":"/root/engineer","method":"collaboration.followup_task","correction_round":1,"maximum_correction_rounds":2}
+{"sequence":9,"event":"handoff","from":"/root/engineer","to":"/root/qa","correction_round":1,"fix":"Refresh deployment snapshot after valid QA approval; reject review-time site mutations","engineering_tests_passed":14}
+{"sequence":10,"event":"qa_verdict","from":"/root/qa","correction_round":1,"approved":true,"tests_passed":15,"artifact":"evidence/qa-round-1.json"}
+{"sequence":11,"event":"terminal","status":"local_experiment_approved","corrections_used":1,"maximum_corrections":2,"remote_actions_run":false,"deployed":false,"publication":"awaiting_user_repository_and_publication_decision"}

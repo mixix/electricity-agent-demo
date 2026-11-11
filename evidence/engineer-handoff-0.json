@@ -1,0 +1,18 @@
+{
+  "role": "Engineer",
+  "iteration": 0,
+  "status": "ready_for_independent_qa",
+  "implementation": "site/index.html, site/style.css, site/app.mjs, site/calculator.mjs",
+  "tests": "tests/calculator.test.mjs",
+  "ci": ".github/workflows/ci.yml",
+  "deployment": ".github/workflows/pages.yml",
+  "verification": {
+    "command": "node --test tests/*.test.mjs",
+    "exitCode": 0,
+    "passed": 4,
+    "failed": 0,
+    "note": "npm is not on the local PATH. The package test script invokes the identical Node command. GitHub setup-node supplies npm."
+  },
+  "remoteChanges": false,
+  "seededDefects": false
+}

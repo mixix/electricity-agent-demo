@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Household electricity calculator</title>
+  <style>
+:root { color-scheme: light; font-family: system-ui, sans-serif; color: #18332d; background: #f1f5f0; }
+* { box-sizing: border-box; }
+body { margin: 0; padding: 3rem 1rem; }
+main { max-width: 660px; margin: auto; background: white; padding: clamp(1.25rem, 5vw, 3rem); border-radius: 22px; box-shadow: 0 12px 48px #18332d12; }
+.eyebrow { text-transform: uppercase; letter-spacing: .1em; font-size: .75rem; font-weight: 700; color: #346753; }
+h1 { font-size: clamp(2rem, 6vw, 2.7rem); line-height: 1.12; letter-spacing: -.035em; }
+p { line-height: 1.6; }
+form { display: grid; gap: .6rem; margin: 2rem 0 0; }
+label { font-weight: 650; margin-top: .6rem; }
+label span { display: block; font-weight: 400; font-size: .85rem; color: #50645d; }
+input { width: 100%; border: 1px solid #9bafa5; border-radius: 8px; padding: .8rem; font: inherit; }
+button { margin-top: .8rem; padding: .95rem; background: #185b43; color: white; font: inherit; font-weight: 650; border: 0; border-radius: 8px; cursor: pointer; }
+button:hover { background: #104a35; }
+:focus-visible { outline: 3px solid #a66a00; outline-offset: 3px; }
+#error { color: #9b241c; min-height: 1.5em; margin: .2rem 0; }
+dl div { display: flex; justify-content: space-between; gap: 1rem; padding: .9rem 0; border-bottom: 1px solid #dce5de; flex-wrap: wrap; }
+dd { margin: 0; font-weight: 700; }
+.highlight { color: #185b43; font-size: 1.15rem; }
+.note { font-size: .8rem; color: #50645d; margin-top: 1.5rem; }
+
+</style>
+  
+</head>
+<body>
+<main>
+  <p class="eyebrow">Know your everyday energy</p>
+  <h1>What does your appliance cost to run?</h1>
+  <p>Enter its power, daily use, and your electricity rate to estimate the cost.</p>
+  <form novalidate>
+    <label for="watts">Appliance power <span>watts (W)</span></label>
+    <input id="watts" name="watts" type="number" min="0" step="any" value="1000" required inputmode="decimal">
+    <label for="hours">Daily use <span>hours, from 0 to 24</span></label>
+    <input id="hours" name="hours" type="number" min="0" max="24" step="any" value="2" required inputmode="decimal">
+    <label for="price">Electricity rate <span>euros per kilowatt-hour (€/kWh)</span></label>
+    <input id="price" name="price" type="number" min="0" step="any" value="0.30" required inputmode="decimal">
+    <button type="submit">Calculate cost</button>
+    <p id="error" role="alert"></p>
+  </form>
+  <section id="results" aria-live="polite" aria-atomic="true" hidden>
+    <h2>Your estimate</h2>
+    <dl>
+      <div><dt>Daily energy</dt><dd id="daily-energy"></dd></div>
+      <div><dt>Daily cost</dt><dd id="daily"></dd></div>
+      <div class="highlight"><dt>Monthly cost · 30 days</dt><dd id="monthly"></dd></div>
+      <div><dt>Annual cost · 365 days</dt><dd id="annual"></dd></div>
+    </dl>
+  </section>
+  <p class="note">Assumes the same daily use at the stated power. Estimates exclude fixed charges. Actual consumption can vary, especially for appliances that cycle on and off. Inputs stay in your browser.</p>
+</main>
+<script>
+function calculate(watts, hours, price) {
+  const values = [watts, hours, price];
+  if (values.some(value => (typeof value !== 'number' && typeof value !== 'string') || String(value).trim() === '')) {
+    throw new RangeError('Enter all three values.');
+  }
+  const [w, h, p] = values.map(Number);
+  if (![w, h, p].every(Number.isFinite) || w < 0 || h < 0 || h > 24 || p < 0) {
+    throw new RangeError('Use non-negative finite numbers, with daily hours between 0 and 24.');
+  }
+  const dailyKwh = w / 1000 * h;
+  const dailyCost = dailyKwh * p;
+  const monthlyCost = dailyCost * 30;
+  const annualCost = dailyCost * 365;
+  if (![dailyKwh, dailyCost, monthlyCost, annualCost].every(Number.isFinite)) {
+    throw new RangeError('These values are too large to calculate.');
+  }
+  return { dailyKwh, dailyCost, monthlyCost, annualCost };
+}
+
+
+const form = document.querySelector('form');
+const error = document.querySelector('#error');
+const results = document.querySelector('#results');
+const currency = new Intl.NumberFormat('en-IE', { style: 'currency', currency: 'EUR' });
+form.addEventListener('submit', event => {
+  event.preventDefault();
+  error.textContent = '';
+  try {
+    const estimate = calculate(form.elements.watts.value, form.elements.hours.value, form.elements.price.value);
+    document.querySelector('#daily-energy').textContent = `${estimate.dailyKwh.toLocaleString('en-IE', { maximumFractionDigits: 4 })} kWh`;
+    for (const period of ['daily', 'monthly', 'annual']) {
+      document.querySelector(`#${period}`).textContent = currency.format(estimate[`${period}Cost`]);
+    }
+    results.hidden = false;
+  } catch (problem) {
+    results.hidden = true;
+    error.textContent = problem.message;
+  }
+});
+
+</script>
+</body>
+</html>
+
